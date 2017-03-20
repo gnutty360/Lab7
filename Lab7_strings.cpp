@@ -137,6 +137,16 @@ int main()
 	
 	
 // -----------------------------------------------------------------------
+
+
+// ***********************************************************************
+// Use a "Range for" (Lippman, page 93) and operations in table 3.3 to:
+// 1) change the case of the letters in your input line above (upper to
+//    lowercase and vice-versa).
+// 2) Replace any whitespace with a dot ('.').
+// Print the converted text.
+// ***********************************************************************
+
 	string line;
 	cout << "\nEnter some text:" << endl;
 	getline(cin, line);
@@ -160,14 +170,6 @@ int main()
 	cout << "\nEnter some text, finish it with an &:" << endl;
 	getline(cin, line, '&');	// the delimiter can be any character
 	cout << line << endl;
-
-// ***********************************************************************
-// Use a "Range for" (Lippman, page 93) and operations in table 3.3 to:
-// 1) change the case of the letters in your input line above (upper to
-//    lowercase and vice-versa).
-// 2) Replace any whitespace with a dot ('.').
-// Print the converted text.
-// ***********************************************************************
 
 	return 0;
 }

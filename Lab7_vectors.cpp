@@ -18,6 +18,7 @@ using namespace std;
 // Main function. Shows a few examples. Complete the assignments stated in the comments.
 int main()
 {
+	int i;
 	vector<int> ivec1(5), ivec2;
 	vector<double> dvec1{5.1}, dvec2(5,1.5);
 	vector<string> svec1 = {"hello", "world"};
@@ -61,5 +62,52 @@ int main()
 // or define new ones. Try different types.
 // ***********************************************************************
 
+	vector<int> scores(10);//1
+	for( i = 0; i < scores.size(); i++ ){
+		scores[i] = i;
+	}
+		
+	for(i = 0; i < scores.size(); i++){
+		cout<< scores[i] <<" ";
+	}
+	cout<<endl;
+	
+	vector<int> copy(scores);//2
+	
+	for(i = 0; i < copy.size(); i++){
+		cout<< copy[i] <<" ";
+	}
+	cout<<endl;
+	
+	vector<int> copy2 = scores;//3
+	
+	
+	for(i = 0; i < copy2.size(); i++){
+		cout<< copy2[i] <<" ";
+	}
+	cout<<endl;
+	
+	vector<double> percentages(10,50.5);//4
+	
+	for(auto i:percentages){
+		cout<< i <<" ";
+	}
+	cout<<endl;
+	
+	int number = 8;
+	
+	vector<int> foo(number);//5
+	for(auto i:foo){
+		cout<< i <<" ";
+	}
+	cout<<endl;
+	
+	vector<string> sentence{"This", "is", "a", "sentence that I wrote"};//6 and 7
+	for(auto i:sentence){
+		cout<< i <<" ";
+	}
+	cout<<endl;
+	
+	
 	return 0;
 }
