@@ -114,12 +114,17 @@ int main()
 	cout << "------------------------------------------------------------------" << endl;
 	obj1*2;		// Would 2*obj1 work? Give it a try.
 	obj2*f;		// Would f*obj2 work? Give it a try.
+	//2*obj1;
 	obj1.Printvals();
 	obj2.Printvals();
 	
 	cout << "------------------------------------------------------------------" << endl;
 	// Which operator is being called next?
-	obj3 = operator+(obj1, obj2);	// Would  obj3 = obj2 + obj1; work?
+	//obj3 = operator+(obj1, obj2);	// Would  obj3 = obj2 + obj1; work?
+	obj3.a[0] = 0;
+	obj3.a[1] = 0;
+	obj3 + obj1;
+	obj3 + obj2;
 	obj1.Printvals();				// If not, how could you make it work?
 	obj2.Printvals();
 	obj3.Printvals();
