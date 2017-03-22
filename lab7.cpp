@@ -40,6 +40,7 @@ class Signal{
 
 };
 
+//Default constructor. Sets all private members to zero
 Signal::Signal(){
 	this -> fileName = "void";
 	this -> length = 0;
@@ -48,6 +49,8 @@ Signal::Signal(){
 	
 }
 
+//Filenumber constructor. Opens the data file with the corresponding filenumber
+//and sets all the private members.
 Signal::Signal(string L){
 	fstream dataFile;
 	string fileName;
@@ -68,6 +71,7 @@ Signal::Signal(string L){
 	//If not, set default values and return
 	if(!dataFile.is_open()){
 		cout<<"\nCould not open "<<fileName<<" setting default values!"<<endl;
+		this -> fileName = "NULL";
 		this -> length = 0;
 		this -> max_value = 0;
 		this -> average = 0;
@@ -87,8 +91,9 @@ Signal::Signal(string L){
 	for(int i = 0; i < this -> data.size(); i++){
 		dataFile >> this -> data[i];
 	}
-	
+	//Close the file
 	dataFile.close();
+	//Calculate the average value from the data
 	calcAvg();
 	return;
 }
@@ -104,6 +109,7 @@ Signal::Signal(const char* fileName){
 	//If not, set default values and return
 	if(!dataFile.is_open()){
 		cout<<"\nCould not open "<<fileName<<" setting default values!"<<endl;
+		this -> fileName = "NULL";
 		this -> length = 0;
 		this -> max_value = 0;
 		this -> average = 0;
@@ -129,10 +135,12 @@ Signal::Signal(const char* fileName){
 	return;
 }
 
+//Destructor. Doesn't do anything really. It prints to know it was called.
 Signal::~Signal(){
 	cout<<"Destructor"<<endl;
 }
 
+//Finds the maximum value in the data set and returns it.
 double Signal::calcMaxValue(){
 	double hold = 0;
 	
@@ -145,6 +153,7 @@ double Signal::calcMaxValue(){
 	
 }
 
+//Calculates the average of the data set and sets the average member.
 void Signal::calcAvg(){
 	
 	double total = 0;
@@ -157,6 +166,9 @@ void Signal::calcAvg(){
 	
 }
 
+//Overloaded operator to multiply a signal by a double. Multiplies each
+//data value by the double value sent to the function. Finds the new max
+//value and calculates the new average.
 void Signal::operator*(double x){
 	
 	for(int i = 0; i < this -> length; i++){
@@ -166,6 +178,8 @@ void Signal::operator*(double x){
 	calcAvg();
 }
 
+//Overloaded operator to add a double to a signal. Adds the double to each
+//of the data values. Finds the new max value and calulates the new average.
 void Signal::operator+(double x){
 	
 	for(int i = 0; i < this -> length; i++){
@@ -175,12 +189,14 @@ void Signal::operator+(double x){
 	calcAvg();
 }
 
+//Centers the data by using the overloaded addition operator.
 void Signal::center(){
 	this -> operator+(-(this -> average));
 	this -> max_value = calcMaxValue();
 	calcAvg();
 }
 
+//Normalizes the data by using the overloaded multiplication operator.
 void Signal::normalize(){
 	operator*(1/(this->max_value));
 	this -> max_value = calcMaxValue();
@@ -188,12 +204,21 @@ void Signal::normalize(){
 	
 }
 
+//Prints all of the information about the signal. This was changed from
+//Lab6 to include the printing of the data and the filename where the data
+//came from.
 void Signal::Sig_info(){
-	cout<<"\nNumber of data points (length): "<<this->length
+	cout<<"\nData file name: "<< this->fileName
+	<<"\nNumber of data points (length): "<<this->length
 	<<"\nMaximum value (max_value): "<<this->max_value
-	<<"\nAverage of data (average): "<<this->average<<"\n"<<endl;
+	<<"\nAverage of data (average): "<<this->average<<endl;
+	for( int i = 0; i < this->length; i++){
+		cout<< this ->data[i] << endl;
+	}
 }
 
+//Saves the current signal to a new file whose name is that
+//of the string that is passed to the function.
 void Signal::Save_file(string newFileName){
 	newFileName = std::string(newFileName) + ".txt";
 	const char* newFilePtr = newFileName.c_str();
@@ -221,7 +246,7 @@ string fileSave();
 
 int main(){
 	
-	locale loc;
+	locale loc; //Used for some error checking.
 	string userInput;
 	string fileName;
 	const char* fileNamePtr = fileName.c_str();
@@ -278,7 +303,7 @@ int main(){
 			for(auto &c: userInput){
 				c = toupper(c);
 			}
-			
+			//Logic on the user input for operations
 			if(userInput == "S"){
 				dataSignal->operator*(scaling());
 			}else if(userInput == "O"){
