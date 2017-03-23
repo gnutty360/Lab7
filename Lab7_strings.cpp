@@ -23,6 +23,7 @@ int main()
 	cin >> s1;
 	cin.ignore();	// to consume the '\n' character. Otherwise, you may get issues with
 					// the getline() below. Try commenting this out. Any issues?
+					// Yes. STDIN still contained the /n from out input. This messed with things.
 	
 	string s4(s1);
 	

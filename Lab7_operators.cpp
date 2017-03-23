@@ -76,7 +76,7 @@ int main()
 	obj1.a[0] = 1; obj1.a[1] = 5;
 	obj2.a[0] = 10; obj2.a[1] = 20;
 	
-	if(obj1 > obj2)	// normal expression. Which operator is being called?
+	if(obj1 > obj2)	// normal expression. Which operator is being called? The member function one
 		cout << "\nObject 1 is bigger than object 2" << endl;
 	else
 		cout << "\nObject 1 is not bigger than object 2" << endl;
@@ -87,7 +87,7 @@ int main()
 		cout << "\nObject 1 is not bigger than object 2" << endl;
 	
 	
-	if(obj2 > obj1)	// Which operator is being called?
+	if(obj2 > obj1)	// Which operator is being called? The member function one
 		cout << "\nObject 2 is bigger than object 1" << endl;
 	else
 		cout << "\nObject 2 is not bigger than object 1" << endl;
@@ -101,12 +101,12 @@ int main()
 	obj1.Printvals();
 	obj2.Printvals();
 	
-	obj1 + obj2;	// normal expression. Which operator is being called?
+	obj1 + obj2;	// normal expression. Which operator is being called? The member function
 	// obj1.operator+(obj2);	// equivalent, try it out
 	obj1.Printvals();
 	obj2.Printvals();
 	
-	obj2 + obj1;	// normal expression. Which operator is being called?
+	obj2 + obj1;	// normal expression. Which operator is being called? The member function
 	// obj2.operator+(obj1);	// equivalent, try it out
 	obj1.Printvals();
 	obj2.Printvals();
@@ -125,11 +125,11 @@ int main()
 	obj3.a[1] = 0;
 	obj3 + obj1;
 	obj3 + obj2;
-	obj1.Printvals();				// If not, how could you make it work?
-	obj2.Printvals();
+	obj1.Printvals();				// If not, how could you make it work? By changing what the member function
+	obj2.Printvals();				//recieves and returns;
 	obj3.Printvals();
 	
-	obj3 = operator+(obj2, obj1);	// is this the same as before?
+	obj3 = operator+(obj2, obj1);	// is this the same as before? This is the non member function
 	obj1.Printvals();
 	obj2.Printvals();
 	obj3.Printvals();
