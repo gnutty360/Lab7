@@ -21,7 +21,7 @@ class Signal{
 		int length;
 		double max_value;
 		double average;
-				vector<double> data;
+		vector<double> data;
 		void calcAvg();
 		double calcMaxValue();
 		
@@ -29,6 +29,15 @@ class Signal{
 
 		void operator*(double x);
 		void operator+(double x);
+		void addData(double x, int i);
+		void setName(string);
+		double getData(int);
+		void setAvg(double);
+		double getAvg();
+		void setData(double, int);
+		double getMax();
+		void setMax(double);
+		int getLength();
 		void center();
 		void normalize();
 		void Sig_info();
@@ -140,6 +149,18 @@ Signal::~Signal(){
 	cout<<"Destructor"<<endl;
 }
 
+double Signal::getAvg(){
+	return(this-> average);
+}
+
+void Signal::setAvg(double value){
+	this->average = value;
+}
+
+void Signal::setName(string name){
+	this->fileName = name;
+}
+
 //Finds the maximum value in the data set and returns it.
 double Signal::calcMaxValue(){
 	double hold = 0;
@@ -153,6 +174,22 @@ double Signal::calcMaxValue(){
 	
 }
 
+void Signal::setMax(double value){
+	this->max_value = value;
+}
+
+//Returns the value at the specified location in the data vector
+double Signal::getData(int i){
+	if(i < (this -> length)-1)
+		return(this->data[i]);
+	return(0);
+}
+
+//Returns the objects length member
+int Signal::getLength(){
+	return(this->length);
+}
+
 //Calculates the average of the data set and sets the average member.
 void Signal::calcAvg(){
 	
@@ -164,6 +201,15 @@ void Signal::calcAvg(){
 	
 	this -> average = (double)(total) / this -> length;
 	
+}
+
+//Sets the data at the index to the value specified.
+void Signal::setData(double value, int i){
+	this->data[i] = value;
+}
+//Returns the max_value
+double Signal::getMax(){
+	return(this->max_value);
 }
 
 //Overloaded operator to multiply a signal by a double. Multiplies each
@@ -187,6 +233,11 @@ void Signal::operator+(double x){
 	}
 	this -> max_value = calcMaxValue();
 	calcAvg();
+}
+
+//Adds a value x to the data indexed by i
+void Signal::addData(double x, int i){
+	this->data[i] += x;
 }
 
 //Centers the data by using the overloaded addition operator.
@@ -238,10 +289,11 @@ void Signal::Save_file(string newFileName){
 	saveFile.close();
 	return;
 }
-
+Signal operator+(Signal, Signal);
 void optionMenu();
 double scaling();
 double offsetting();
+Signal addSignals();
 string fileSave();
 
 int main(){
@@ -318,6 +370,8 @@ int main(){
 				dataSignal->Save_file(fileSave());
 			}else if(userInput == "Q"){
 				break;
+			}else if(userInput == "A"){
+				*dataSignal = *dataSignal + addSignals();
 			}else{
 				cout<<"Invalid input!"<<endl;
 			}
@@ -356,6 +410,7 @@ void optionMenu(){
 		<<"(P) : Print statistics for the data\n"
 		<<"(C) : Center the data\n"
 		<<"(N) : Normalize the data\n"
+		<<"(A) : Add signals\n"
 		<<"(V) : Save data to file\n"
 		<<"(Q) : Quit"<<endl;
 	return;
@@ -404,5 +459,72 @@ string fileSave(){
 	getline(cin, newFileName);
 	
 	return(newFileName);
+	
+}
+
+//Opens a new signal to be added to the current one
+//Returns that signal.
+Signal addSignals(){
+	locale loc;
+	string userInput;
+	Signal* dataSignal;
+	string fileName;
+	const char* fileNamePtr = fileName.c_str();
+	cout<<"\nPlease specify which data file contains the signal you wish to add."<<endl;
+	cout<<"Enter 'F' to use the file name or 'N' to use the file number:"<<endl;
+	getline(cin, userInput);
+	//Convert input to upper case
+	for(auto &c : userInput){
+		c = toupper(c);
+	}
+	//Error check input
+	while(userInput != "F" && userInput != "N"){
+		cout<<"\nInvalid input!"<<endl;
+		cout<<"\nEnter 'F' to use the file name or 'N' to use the file number:"<<endl;
+		getline(cin, userInput);
+		for(auto &c : userInput){
+		c = toupper(c);
+		}
+	}
+	//Logic on input
+	if(userInput == "F"){
+		cout<<"Please enter the file name to be opened:"<<endl;
+		getline(cin, fileName);
+		dataSignal = new Signal(fileNamePtr);
+	}else{
+		cout<<"\nPlease enter the file number to be opened:"<<endl;
+		getline(cin, userInput);
+		//Error check on file number input
+		while(userInput.size() > 2 || (!isdigit(userInput[0],loc) && !isdigit(userInput[1],loc))){
+			cout<<"\nInvalid file number!"<<endl;
+			cout<<"\nPlease enter the file number to be opened:"<<endl;
+			getline(cin, userInput);
+		}
+		if(userInput.size() == 1){
+			string hold = userInput;
+			userInput = "0";
+			userInput = userInput + hold;
+		}
+		dataSignal = new Signal(userInput);
+	}
+	
+return(*dataSignal);
+}
+
+Signal operator+(Signal sig1, Signal sig2){
+	if(sig1.getLength() != sig2.getLength()){
+		cout<<"Cannot add signals if different lengths!"<<endl;
+		return sig1;
+	}
+	
+	for(int i = 0; i < sig1.getLength(); i++){
+		sig1.addData(sig2.getData(i), i);
+	}
+	double max = sig1.getMax() > sig2.getMax() ? sig1.getMax() : sig2.getMax();
+	sig1.setAvg(sig1.getAvg() + sig2.getAvg());
+	sig1.setName("Added");
+	sig1.setMax(max);
+	
+	return(sig1);
 	
 }
